@@ -2,9 +2,9 @@ import {
   startOfDay,
   endOfDay,
   setHours,
-  format,
   setMinutes,
   setSeconds,
+  format,
   isAfter,
 } from 'date-fns';
 import { Op } from 'sequelize';
@@ -15,7 +15,7 @@ class AvailableController {
     const { date } = req.query;
 
     if (!date) {
-      return res.status(400).json({ error: 'Invalid date' });
+      return res.status(400).json({ error: 'Invalid input date' });
     }
 
     const searchDate = Number(date);
@@ -43,9 +43,10 @@ class AvailableController {
       '17:00',
       '18:00',
       '19:00',
+      '20:00',
     ];
 
-    const available = schedule.map(time => {
+    const avaiable = schedule.map(time => {
       const [hour, minute] = time.split(':');
       const value = setSeconds(
         setMinutes(setHours(searchDate, hour), minute),
@@ -61,7 +62,7 @@ class AvailableController {
       };
     });
 
-    return res.json(available);
+    return res.json(avaiable);
   }
 }
 

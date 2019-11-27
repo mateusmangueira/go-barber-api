@@ -1,14 +1,12 @@
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
+
 import User from '../models/User';
 import File from '../models/File';
 import authConfig from '../../config/auth';
 
 class SessionController {
-
   async store(req, res) {
-    const { email, password } = req.body;
-
     const schema = Yup.object().shape({
       email: Yup.string()
         .email()
@@ -17,8 +15,10 @@ class SessionController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Login validation failed' });
+      return res.status(400).json({ error: 'Session validation failed' });
     }
+
+    const { email, password } = req.body;
 
     const user = await User.findOne({
       where: { email },
@@ -26,7 +26,7 @@ class SessionController {
         {
           model: File,
           as: 'avatar',
-          attributes: ['path', 'id', 'url'],
+          attributes: ['id', 'path', 'url'],
         },
       ],
     });
@@ -34,8 +34,9 @@ class SessionController {
     if (!user) {
       return res.status(401).json({ error: 'User was not found' });
     }
+
     if (!(await user.checkPassword(password))) {
-      return res.status(401).json({ error: 'Wrong password' });
+      return res.status(401).json({ error: 'Password does not match' });
     }
 
     const { id, name, avatar, provider } = user;
@@ -52,8 +53,7 @@ class SessionController {
         expiresIn: authConfig.expiresIn,
       }),
     });
-  };
-
+  }
 }
 
 export default new SessionController();
