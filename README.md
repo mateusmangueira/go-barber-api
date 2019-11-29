@@ -1,5 +1,5 @@
 ## Rodando pela primeira vez
-Para rodar a aplicação, você irá precisar [Git](https://git-scm.com), [Node.js v10.16][nodejs] + [Yarn v1.13][yarn] instalados no seu computador. No terminal rode:
+Para rodar a aplicação, você irá precisar [Git](https://git-scm.com), [Node.js](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/lang/en/) e [Docker](https://www.docker.com/) instalados no seu computador. No terminal rode:
 
 ```bash
 # Clone este repositório
@@ -22,5 +22,5 @@ $ yarn sequelize db:migrate
 
 # Renomeie o arquivo .env.example para .env e preencha as variáveis ambiente
 
-# Roder o servidor
+# Rode o servidor
 $ yarn dev
